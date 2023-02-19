@@ -1,4 +1,4 @@
-package com.example.gptassistant.presentation
+package com.example.gptassistant.presentation.viewmodels
 
 import android.app.Application
 import androidx.compose.runtime.mutableStateOf
