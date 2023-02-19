@@ -3,6 +3,7 @@ package com.example.gptassistant.presentation.retrofit
 import android.content.Context
 import android.content.ContextWrapper
 import com.example.gptassistant.BuildConfig
+import com.example.gptassistant.presentation.GPTApp
 import com.google.gson.GsonBuilder
 import com.myjokes.app.wearable.composestarter.presentation.retrofit.CompletionAPI
 import com.myjokes.app.wearable.composestarter.presentation.retrofit.ConnectivityInterceptor
@@ -32,9 +33,11 @@ class RetrofitManager(context: Context) : ContextWrapper(context) {
     }
 
     private fun getDefaultRetrofit(): Retrofit {
+        val token = GPTApp.getToken(baseContext)
         val interceptor = Interceptor { chain ->
             val request = chain.request().newBuilder()
                 .addHeader("Accept", "application/json")
+                .addHeader("Authorization", "Bearer $token")
                 .build()
 
             chain.proceed(request)

@@ -72,7 +72,6 @@ fun WearApp(greetingName: String) {
         }
         else {
             ShowMicrophoneScreen()
-
         }
 
         /*Column(
@@ -109,6 +108,14 @@ fun ShowMicrophoneScreen() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
+
+        Icon(painter = painterResource(id = R.drawable.ic_baseline_settings_24),
+            contentDescription = "For settings",
+            modifier = Modifier.clickable {
+                val intent = Intent(context, SettingsActivity::class.java)
+                context.startActivity(intent)
+            })
+
         if (!startListeningState) Text(text = "Click on the microphone icon to start your query...")
 
         Icon(
@@ -140,12 +147,10 @@ fun ShowMicrophoneScreen() {
 
 
         }) {
-            if (!startListeningState) Text(
-                text = "Proceed", Modifier.clickable {
-                    val intent = Intent(context, GPTActivity::class.java)
-                    context.startActivity(intent)
-                }
-            )
+            if (!startListeningState) Text(text = "Proceed", Modifier.clickable {
+                val intent = Intent(context, GPTActivity::class.java)
+                context.startActivity(intent)
+            })
         }
     }
 }
