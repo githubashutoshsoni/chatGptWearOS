@@ -28,9 +28,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     val exceptionHandler: CoroutineExceptionHandler =
         CoroutineExceptionHandler { CoroutineContext, throwable ->
-
-
+            throwable.printStackTrace()
         }
+
+
+    init {
+        SharedPrefManager.getInstance(getApplication()).setPreference(
+            Constants.API_TOKEN,
+            ""
+        )
+    }
 
     var textFromSpeech: MutableSharedFlow<String> = MutableSharedFlow<String>()
 
@@ -51,10 +58,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             if (response.isSuccessful) {
 
 
-                val rawResponse = response.body().toString()
-                val gson =
-                    Gson().fromJson(rawResponse, CompletionResponse::class.java)
-                textFromSpeech.emit(gson.choices[0].text)
+                val rawResponse = response.body()
+
+                textFromSpeech.emit(rawResponse!!.choices[0].text)
 
             }
 

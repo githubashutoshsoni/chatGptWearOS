@@ -21,6 +21,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -109,7 +111,6 @@ fun ShowMicrophoneScreen(mainViewModel: MainViewModel = viewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-
             .verticalScroll(rememberScrollState())
             .padding(16.dp),
         verticalArrangement = Arrangement.Center,
@@ -118,7 +119,10 @@ fun ShowMicrophoneScreen(mainViewModel: MainViewModel = viewModel()) {
 
 
         if (stateOfTextFromSpeech.value.isNotEmpty()) {
-            Text(text = "Response from chatgpt is ${stateOfTextFromSpeech.value}")
+            Text(
+                text = "Response from chatgpt is ${stateOfTextFromSpeech.value}",
+                modifier = Modifier.padding(top = 30.dp)
+            )
         }
 
         Icon(painter = painterResource(id = R.drawable.ic_baseline_settings_24),

@@ -57,7 +57,7 @@ class RetrofitManager(context: Context) : ContextWrapper(context) {
             .create()
 
         retrofit = Retrofit.Builder()
-            .baseUrl("https://api.openai.com/v1")// + context.getString(R.string.url_version))
+            .baseUrl("https://api.openai.com/v1/")// + context.getString(R.string.url_version))
             .addConverterFactory(GsonConverterFactory.create(gson))
 //                .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(httpClient.build())
