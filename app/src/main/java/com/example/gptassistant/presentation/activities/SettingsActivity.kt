@@ -15,6 +15,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -28,17 +29,22 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.wear.compose.material.Chip
 import androidx.wear.compose.material.Text
 
 import androidx.wear.input.RemoteInputIntentHelper
 import androidx.wear.input.RemoteInputIntentHelper.Companion.putRemoteInputsExtra
+import com.example.gptassistant.presentation.viewmodels.MainViewModel
 
 class SettingsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             TextInput()
+
+
         }
     }
 }
@@ -48,6 +54,8 @@ class SettingsActivity : ComponentActivity() {
 @Composable
 fun TextInput() {
     val label = remember { mutableStateOf("Start") }
+
+
     val launcher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             it.data?.let { data ->
@@ -80,5 +88,10 @@ fun TextInput() {
             }
         )
     }
+}
+
+@Composable
+fun doSomeThing(viewmodel: MainViewModel) {
+
 }
 
