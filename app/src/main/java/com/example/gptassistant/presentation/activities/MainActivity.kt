@@ -45,8 +45,6 @@ import com.example.gptassistant.R
 import com.example.gptassistant.presentation.theme.GPTAssistantTheme
 
 
-const val openAIKey = "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"
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -143,7 +141,7 @@ fun ShowMicrophoneScreen() {
 
         }) {
             if (!startListeningState) Text(
-                text = "Proceed",Modifier.clickable {
+                text = "Proceed", Modifier.clickable {
                     val intent = Intent(context, GPTActivity::class.java)
                     context.startActivity(intent)
                 }
@@ -268,7 +266,17 @@ fun PermissionScreen(isPermissionGranter: (Boolean) -> Unit) {
 
     val context = LocalContext.current
 
+    LaunchedEffect(key1 = Unit, block = {
 
+        if (ContextCompat.checkSelfPermission(
+                context, Manifest.permission.RECORD_AUDIO
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            isPermissionGranter.invoke(true)
+            // Some works that require permission
+
+        }
+    })
 
     Button(onClick = {
         // Check permission
