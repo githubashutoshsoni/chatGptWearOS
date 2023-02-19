@@ -37,12 +37,17 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import com.example.gptassistant.R
 import com.example.gptassistant.presentation.theme.GPTAssistantTheme
+import com.example.gptassistant.presentation.viewmodels.MainViewModel
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
+import org.json.JSONObject
 
 
 class MainActivity : ComponentActivity() {
@@ -86,7 +91,7 @@ fun WearApp(greetingName: String) {
 }
 
 @Composable
-fun ShowMicrophoneScreen() {
+fun ShowMicrophoneScreen(mainViewModel: MainViewModel = viewModel()) {
     val context = LocalContext.current
 
     var inputText by remember {
@@ -97,7 +102,10 @@ fun ShowMicrophoneScreen() {
         mutableStateOf(false)
     }
 
-    val shape = RectangleShape
+    val stateOfTextFromSpeech = mainViewModel.textFromSpeech.collectAsState(initial = "")
+
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -108,6 +116,10 @@ fun ShowMicrophoneScreen() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
+
+        if (stateOfTextFromSpeech.value.isNotEmpty()) {
+            Text(text = "Response from chatgpt is ${stateOfTextFromSpeech.value}")
+        }
 
         Icon(painter = painterResource(id = R.drawable.ic_baseline_settings_24),
             contentDescription = "For settings",
@@ -148,8 +160,34 @@ fun ShowMicrophoneScreen() {
 
         }) {
             if (!startListeningState) Text(text = "Proceed", Modifier.clickable {
-                val intent = Intent(context, GPTActivity::class.java)
-                context.startActivity(intent)
+
+
+                /*{
+  "model": "text-davinci-003",
+  "prompt": "Say this is a test",
+  "max_tokens": 7,
+  "temperature": 0,
+  "top_p": 1,
+  "n": 1,
+  "stream": false,
+  "logprobs": null,
+  "stop": "\n"
+}*/
+
+                val jsonObject = JSONObject()
+                jsonObject.put("model", "text-davinci-003")
+                jsonObject.put("prompt", inputText)
+                jsonObject.put("max_tokens", 7)
+                jsonObject.put("temperature", 0)
+                jsonObject.put("top_p", 1)
+                jsonObject.put("n", 1)
+                jsonObject.put("stream", false)
+                jsonObject.put("logprobs", null)
+                jsonObject.put("stop", "\n")
+                val json = JsonParser().parse(jsonObject.toString()) as JsonObject
+                mainViewModel.requestToAPI(json)
+                /* val intent = Intent(context, GPTActivity::class.java)
+                    context.startActivity(intent)*/
             })
         }
     }

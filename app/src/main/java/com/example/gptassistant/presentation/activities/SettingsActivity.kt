@@ -52,7 +52,7 @@ class SettingsActivity : ComponentActivity() {
 
 @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
 @Composable
-fun TextInput() {
+fun TextInput(mainViewModel: MainViewModel = viewModel()) {
     val label = remember { mutableStateOf("Start") }
 
 
@@ -63,7 +63,7 @@ fun TextInput() {
                 val ipAddress: CharSequence? = results.getCharSequence("ip_address")
                 label.value = ipAddress.toString()
                 Log.d("TextInputToken", "TextInput: ${ipAddress.toString()}")
-
+                mainViewModel.saveToken(ipAddress.toString())
             }
         }
     Column() {
@@ -90,8 +90,5 @@ fun TextInput() {
     }
 }
 
-@Composable
-fun doSomeThing(viewmodel: MainViewModel) {
 
-}
 
