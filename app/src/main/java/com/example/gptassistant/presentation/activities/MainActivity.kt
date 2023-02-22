@@ -124,6 +124,9 @@ fun ShowMicrophoneScreen(mainViewModel: MainViewModel = viewModel()) {
                 modifier = Modifier.padding(top = 30.dp)
             )
         }
+        LaunchedEffect(key1 = Unit) {
+            mainViewModel.textToSpeech(stateOfTextFromSpeech.value)
+        }
 
         Icon(painter = painterResource(id = R.drawable.ic_baseline_settings_24),
             contentDescription = "For settings",
